@@ -1,0 +1,13 @@
+dim_datumy = 
+-- pridava sloupecky do tabulky vracene funkci SELECTCOLUMNS()
+ADDCOLUMNS(
+    -- vybira sloupecek [Date] a přejmenovává jej na [datum]
+    SELECTCOLUMNS(
+        -- vraci sloupecek [Date]
+        CALENDARAUTO()
+    ,"datum",[Date])
+-- pár "nazev sloupce":"hodnota"
+,"rok",YEAR([datum])
+,"kvartal",QUARTER([datum])
+,"mesic",MONTH([datum])
+,"tyden",WEEKNUM([datum],21))
