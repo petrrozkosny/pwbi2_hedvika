@@ -26,3 +26,18 @@ VAR varianta3 =
 RETURN varianta3
 
 __________________________________________________
+25 nejdestivejsi mesic = 
+
+-- suma srazek v mesici a roce vizualu
+VAR _suma_srazek = SUM(data[srazky])
+--
+VAR _max_suma_srazek = 
+MAXX(
+    ADDCOLUMNS(
+    ALL(data[rok]),
+    "rocni srazky",
+    CALCULATE(SUM(data[srazky]))),
+[rocni srazky])
+
+RETURN
+IF(_suma_srazek = _max_suma_srazek,"GOLD")
