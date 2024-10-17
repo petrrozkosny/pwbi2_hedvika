@@ -1,3 +1,8 @@
+02 suma srazek ruzyne = 
+SUMX(
+    FILTER(data,data[lokalita] = "RUZYNE"),
+data[srazky])
+__________________________________________________
 03 suma srazek ruzyne calculate = 
 -- TAKTO NE
 VAR varianta1 =
