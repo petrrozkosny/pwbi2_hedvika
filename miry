@@ -1,0 +1,23 @@
+03 suma srazek ruzyne calculate = 
+-- TAKTO NE
+VAR varianta1 =
+    CALCULATE(
+        SUM(data[srazky]),
+        FILTER(data,
+        data[lokalita] = "RUZYNE"))
+
+-- TAKTO ANO, POKUD NEFUNGUJE VARIANTA 3
+VAR varianta2 = 
+    CALCULATE(
+        SUM(data[srazky]),
+        FILTER(ALL(data[lokalita]),
+        data[lokalita] = "RUZYNE"))
+-- TAKTO ANO
+VAR varianta3 = 
+    CALCULATE(
+        SUM(data[srazky]),
+        data[lokalita] = "RUZYNE")
+
+RETURN varianta3
+
+__________________________________________________
