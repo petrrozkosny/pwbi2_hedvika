@@ -1,0 +1,23 @@
+45 suma srazek vybrane roky = 
+
+VAR _tabulka = 
+ADDCOLUMNS(
+GENERATESERIES(
+    SELECTEDVALUE(dim_roky[rok])-1,
+    SELECTEDVALUE(dim_roky[rok])+1,1),
+"rocni srazky",
+CALCULATE(SUM(data[srazky]),
+data[rok] = EARLIER([Value])))
+
+VAR _srazky = 
+SUMX(
+    FILTER(_tabulka
+    ,[Value] = SELECTEDVALUE(data[rok])),[rocni srazky])
+return
+IF(NOT
+    ISFILTERED(dim_roky[rok]),
+    SUM(data[srazky]),
+    _srazky)
+
+
+
