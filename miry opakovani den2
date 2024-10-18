@@ -1,0 +1,32 @@
+DEFINE
+-- =================== FORMATOVANI ========================
+-- https://www.vertex42.com/ExcelTips/unicode-symbols.html
+MEASURE _miry[barva_pozitivni] = "GREEN"
+MEASURE _miry[barva_negativni] = "PINK"
+MEASURE _miry[ikona_pozitivni] = UNICHAR(8593)
+MEASURE _miry[ikona_negativni] = UNICHAR(8595)
+-- =================== FORMATOVANI ========================
+
+-- ================== AGREGACE
+-- suma srazek v roce vizualu, lokalite vizualu
+MEASURE _miry[suma_srazek] = SUM(data[srazky])
+MEASURE _miry[suma_srazek_predchozi] = CALCULATE(SUM(data[srazky]),dim_datumy[rok] = SELECTEDVALUE(dim_datumy[rok])-1)
+MEASURE _miry[suma_srazek_yoy_abs] = ROUND([suma_srazek] - [suma_srazek_predchozi],1)
+MEASURE _miry[suma_srazek_yoy_pct] = [suma_srazek] / [suma_srazek_predchozi] - 1
+
+MEASURE _miry[mezirocne_text] = 
+
+IF([suma_srazek_yoy_abs] >0,[ikona_pozitivni],[ikona_negativni])
+&" "&[suma_srazek_yoy_abs]&" ( "&FORMAT(ROUND([suma_srazek_yoy_pct],5),"PERCENT")&" )"
+
+MEASURE _miry[mezirocne_barva] = 
+
+IF([suma_srazek_yoy_abs] >0,[barva_pozitivni],[barva_negativni])
+
+-- =================== KUMULACE ========================
+
+MEASURE _miry[srazky_kumulativne] = CALCULATE(SUM(data[srazky]),dim_datumy[mesic] <= SELECTEDVALUE(dim_datumy[mesic]))
+MEASURE _miry[srazky_kumulativne_predchozi_rok] = CALCULATE(SUM(data[srazky]),dim_datumy[mesic] <= SELECTEDVALUE(dim_datumy[mesic]),dim_datumy[rok] = SELECTEDVALUE(dim_datumy[rok])-1)
+
+MEASURE _miry[srazky_kumulativne_predchozi_rok_pct] = [srazky_kumulativne] / [srazky_kumulativne_predchozi_rok] - 1
+
